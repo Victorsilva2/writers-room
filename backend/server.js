@@ -20,7 +20,8 @@ app.post('/register', async (req, res) => {
     
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    
+    const role = 'user';
+
     const result = await pool.query(
       'INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, $4) RETURNING id, name, email, role',
       [name, email, hashedPassword, role || 'user']
@@ -57,6 +58,38 @@ app.post('/login', async (req, res) => {
     }
 
     
+app.post('/posts', async (req, res) => {
+  const { title, content, user_id } = req.body;
+
+  try {
+    const result = await pool.query(
+      'INSERT INTO posts (title, content, user_id) VALUES ($1, $2, $3) RETURNING *',
+      [title, content, user_id]
+    );
+    res.status(201).json({ message: 'Post created', post: result.rows[0] });
+  } catch (err) {
+    console.error('Post creation error:', err.message);
+    res.status(500).json({ error: 'Failed to create post' });
+  }
+});
+
+app.get('/posts', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT posts.*, users.name AS author_name
+      FROM posts
+      JOIN users ON posts.user_id = users.id
+      ORDER BY posts.created_at DESC
+    `);
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error fetching posts:', err.message);
+    res.status(500).json({ error: 'Failed to fetch posts' });
+  }
+});
+
+
+
     res.json({
       message: 'Login successful',
       user: {
