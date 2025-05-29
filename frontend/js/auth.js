@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = Object.fromEntries(formData.entries());
 
       try {
-        const res = await fetch("http://localhost:3001/register", {
+        const res = await fetch("https://writers-backend-69m5.onrender.com/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = Object.fromEntries(formData.entries());
 
       try {
-        const res = await fetch("http://localhost:3001/login", {
+        const res = await fetch("https://writers-backend-69m5.onrender.com/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),

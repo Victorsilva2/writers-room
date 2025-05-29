@@ -13,6 +13,21 @@ app.get('/', (req, res) => {
   res.send('API is running');
 });
 
+
+app.get('/seed-admin', async (req, res) => {
+  try {
+    const hashedPassword = await bcrypt.hash('admin123', 10);
+    const result = await pool.query(
+      'INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, $4) RETURNING *',
+      ['Admin', 'admin@writers.com', hashedPassword, 'admin']
+    );
+    res.json({ message: '✅ Admin user created!', user: result.rows[0] });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: '❌ Failed to create admin' });
+  }
+});
+
 app.post('/register', async (req, res) => {
   const { name, email, password, role } = req.body;
 
