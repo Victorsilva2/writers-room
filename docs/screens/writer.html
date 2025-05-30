@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Writer's Room</title>
-  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="/writers-room/css/styles.css" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
   <style>
     body {
@@ -84,12 +84,12 @@
     const user = JSON.parse(localStorage.getItem("user"));
 
     if (!user || user.role !== "user") {
-      window.location.href = "./login.html";
+      window.location.href = "/writers-room/screens/login.html";
     }
 
     document.getElementById("logoutBtn").addEventListener("click", () => {
       localStorage.removeItem("user");
-      window.location.href = "./login.html";
+      window.location.href = "/writers-room/screens/login.html";
     });
 
     async function loadPosts() {
