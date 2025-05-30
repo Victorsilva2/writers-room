@@ -76,15 +76,34 @@ app.post('/login', async (req, res) => {
 app.post('/posts', async (req, res) => {
   const { title, content, user_id } = req.body;
 
+  if (!title || !content || !user_id) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+
   try {
-    const result = await pool.query(
-      'INSERT INTO posts (title, content, user_id) VALUES ($1, $2, $3) RETURNING *',
-      [title, content, user_id]
+    // Get author name from users table based on user_id
+    const userResult = await pool.query(
+      'SELECT name FROM users WHERE id = $1',
+      [user_id]
     );
-    res.status(201).json({ message: 'Post created', post: result.rows[0] });
+
+    if (userResult.rows.length === 0) {
+      return res.status(400).json({ error: 'Invalid user ID' });
+    }
+
+    const authorName = userResult.rows[0].name;
+
+    // Insert into posts table
+    const result = await pool.query(
+      `INSERT INTO posts (title, content, author, author_id, user_id)
+       VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+      [title, content, authorName, user_id, user_id]
+    );
+
+    res.status(201).json({ message: '✅ Post created successfully!', post: result.rows[0] });
   } catch (err) {
     console.error('Post creation error:', err.message);
-    res.status(500).json({ error: 'Failed to create post' });
+    res.status(500).json({ error: '❌ Failed to create post' });
   }
 });
 
