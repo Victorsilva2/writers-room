@@ -2,82 +2,36 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Writer's Room</title>
+  <title>Daniela's Writing Room Blog</title>
   <link rel="stylesheet" href="/writers-room/css/styles.css" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
-  <style>
-    body {
-      font-family: 'Roboto', sans-serif;
-      max-width: 700px;
-      margin: 40px auto;
-      padding: 0 20px;
-      background: #f9f9f9;
-      color: #333;
-    }
-
-    h2, h3 {
-      border-bottom: 1px solid #ccc;
-      padding-bottom: 4px;
-    }
-
-    form input, form textarea, form select, form button {
-      display: block;
-      width: 100%;
-      margin-top: 10px;
-      padding: 10px;
-      font-size: 1rem;
-      border: 1px solid #bbb;
-      border-radius: 4px;
-    }
-
-    button {
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-
-    #postList > div {
-      background: white;
-      border: 1px solid #ddd;
-      padding: 15px;
-      margin-bottom: 15px;
-      border-radius: 6px;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-    }
-
-    small {
-      color: #777;
-    }
-
-    #responseMessage {
-      margin-top: 10px;
-      color: green;
-      font-weight: bold;
-    }
-  </style>
 </head>
 <body>
-  <h2>Welcome, Writer</h2>
-  <button id="logoutBtn">Logout</button>
+  <header>
+    <h1>Daniela's Writing Room 🐾</h1>
+    <nav>
+      <button id="logoutBtn">Logout</button>
+    </nav>
+  </header>
 
-  <h3>Community Posts</h3>
-  <div id="postList">Loading posts...</div>
+  <section id="blog-posts">
+    <h2>📝 My Blog Posts</h2>
+    <div id="postList">Loading posts...</div>
+  </section>
 
-  <hr />
+  <section id="new-post">
+    <h2>Create New Post 💖</h2>
+    <form id="postForm">
+      <input type="text" name="title" placeholder="Post Title" required />
+      <textarea name="content" placeholder="Write your blog post..." rows="8" required></textarea>
+      <button type="submit">Publish</button>
+    </form>
+    <p id="responseMessage"></p>
+  </section>
 
-  <h3>Create a Post</h3>
-  <form id="postForm">
-    <input type="text" name="title" placeholder="Post Title" required />
-    <textarea name="content" placeholder="Write your post..." rows="8" required></textarea>
-    <button type="submit">Publish</button>
-  </form>
-
-  <p id="responseMessage"></p>
+  <footer>
+    Made with ❤️ for Daniela by Victor 🐈
+  </footer>
 
   <script>
     const API_BASE = "https://writers-backend-69m5.onrender.com";
@@ -102,9 +56,9 @@
           postList.innerHTML = "<p>No posts yet.</p>";
         } else {
           postList.innerHTML = posts.map(post => `
-            <div>
-              <strong>${post.title}</strong><br>
-              <small>By ${post.author_name} on ${new Date(post.created_at).toLocaleString()}</small>
+            <div class="blog-post">
+              <h3>${post.title}</h3>
+              <small>By ${post.author_name} • ${new Date(post.created_at).toLocaleDateString()}</small>
               <p>${post.content}</p>
             </div>
           `).join("");
