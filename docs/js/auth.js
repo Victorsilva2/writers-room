@@ -19,8 +19,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const result = await res.json();
 
         if (res.ok) {
-          message.innerText = "✅ Registered successfully! You may now log in.";
-          form.reset();
+          message.innerText = "✅ Registered successfully! Redirecting to login...";
+          setTimeout(() => {
+            window.location.href = "/writers-room/screens/login.html";
+          }, 2000);
         } else {
           message.innerText = `❌ ${result.error || "Registration failed."}`;
         }
@@ -58,9 +60,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
           // Redirect based on role
           if (result.user.role === "admin") {
-            window.location.href = "./dashboard.html";
+            window.location.href = "/writers-room/screens/dashboard.html";
           } else {
-            window.location.href = "./writer.html";
+            window.location.href = "/writers-room/screens/blog.html";
           }
         } else {
           message.innerText = `❌ ${result.error || "Login failed."}`;
