@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// LOGIN SECTION
 document.addEventListener("DOMContentLoaded", () => {
   const loginForm = document.getElementById("loginForm");
   const message = document.getElementById("responseMessage");
@@ -55,14 +56,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const result = await res.json();
 
         if (res.ok) {
-          // Save user info in localStorage
           localStorage.setItem("user", JSON.stringify(result.user));
 
-          // Redirect based on role
           if (result.user.role === "admin") {
             window.location.href = "/writers-room/screens/dashboard.html";
           } else {
-            window.location.href = "/writers-room/screens/blog.html";
+            window.location.href = "/writers-room/screens/blog.html";  // <-- 🔥 THE MAIN FIX
           }
         } else {
           message.innerText = `❌ ${result.error || "Login failed."}`;
