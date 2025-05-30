@@ -110,17 +110,24 @@ app.post('/posts', async (req, res) => {
 app.get('/posts', async (req, res) => {
   try {
     const result = await pool.query(`
-      SELECT posts.*, users.name AS author_name
+      SELECT 
+        posts.id,
+        posts.title,
+        posts.content,
+        posts.created_at,
+        users.name AS author_name
       FROM posts
       JOIN users ON posts.user_id = users.id
       ORDER BY posts.created_at DESC
     `);
+
     res.json(result.rows);
   } catch (err) {
     console.error('Error fetching posts:', err.message);
     res.status(500).json({ error: 'Failed to fetch posts' });
   }
 });
+
 
 
 
